@@ -1,5 +1,6 @@
-import React, { lazy, Suspense } from "react";
+import React, { Component, lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Post from './components/post'
 
 import * as ROUTES from "./constants/routes.jsx";
 
@@ -8,6 +9,7 @@ const Login = lazy(() => import("./pages/login.jsx"));
 const SignUp = lazy(() => import("./pages/signup.jsx"));
 const Profile = lazy(() => import("./pages/profile.jsx"));
 const NotFound = lazy(() => import("./pages/not-found.jsx"));
+
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
           <Route path={ROUTES.PROFILE} element={<Profile />} />
           <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
           <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+          <Route path={"Post"} element={<Post/>}/>
         </Routes>
       </Suspense>
     </Router>

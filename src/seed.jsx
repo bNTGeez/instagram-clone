@@ -10,7 +10,7 @@ export async function seedDatabase(firestore) {
 
   const users = [
     {
-      userId: userId,
+      userId: "zero",
       username: "karl",
       fullName: "Karl Hadwen",
       emailAddress: "karlhadwen@gmail.com",
@@ -19,7 +19,7 @@ export async function seedDatabase(firestore) {
       dateCreated: serverTimestamp(),
     },
     {
-      userId: "2",
+      userId: "one",
       username: "raphael",
       fullName: "Raffaello Sanzio da Urbino",
       emailAddress: "raphael@sanzio.com",
@@ -28,7 +28,7 @@ export async function seedDatabase(firestore) {
       dateCreated: serverTimestamp(),
     },
     {
-      userId: "3",
+      userId: "two",
       username: "dali",
       fullName: "Salvador Dalí",
       emailAddress: "salvador@dali.com",
@@ -37,7 +37,7 @@ export async function seedDatabase(firestore) {
       dateCreated: serverTimestamp(),
     },
     {
-      userId: "4",
+      userId: "our",
       username: "orwell",
       fullName: "George Orwell",
       emailAddress: "george@orwell.com",
@@ -47,13 +47,19 @@ export async function seedDatabase(firestore) {
     },
   ];
 
+  const addUsers = async()=>{
   for (const user of users) {
     try {
       await addDoc(collection(firestore, "users"), user);
+      console.log('added')
     } catch (error) {
       console.error("Error adding user: ", error);
     }
   }
+}
+
+addUsers()
+
 
   for (let i = 1; i <= 5; ++i) {
     await addDoc(collection(firestore, "photos"), {
@@ -78,3 +84,7 @@ export async function seedDatabase(firestore) {
     });
   }
 }
+
+
+
+
