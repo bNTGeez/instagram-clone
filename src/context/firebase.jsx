@@ -1,4 +1,5 @@
-import { createContext} from "react";
+import { createContext } from "react";
+import { firebase, auth, firestore } from "../lib/firebase";
 
-const FirebaseContext = createContext(null);
+const FirebaseContext = createContext({ firebase, auth, firestore });
 export default FirebaseContext;

@@ -17,8 +17,8 @@ function App() {
           <Route path={ROUTES.LOGIN} element={<Login />} />
           <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
           <Route path={ROUTES.PROFILE} element={<Profile />} />
-          <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
-          <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+          <Route path={ROUTES.DASHBOARD} element={<Dashboard />} exact />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </Router>

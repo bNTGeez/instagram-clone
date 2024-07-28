@@ -1,7 +1,7 @@
 import { seedDatabase } from "../seed";
 import { initializeApp } from "firebase/app";
 import { getFirestore, FieldValue } from "firebase/firestore";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 
 const config = {
@@ -15,9 +15,10 @@ const config = {
 };
 
 const firebase = initializeApp(config);
+const auth = getAuth(firebase)
 const firestore = getFirestore(firebase);
 //const analytics = getAnalytics(firebase);
 
 seedDatabase(firestore);
 
-export { firebase, firestore, FieldValue };
+export { firebase, auth, firestore, FieldValue };
