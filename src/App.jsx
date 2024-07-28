@@ -1,28 +1,48 @@
-import React, { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import * as ROUTES from "./constants/routes.jsx";
+import ProtectedRoute from './helpers/protected-route';
+import IsUserLoggedIn from './helpers/is-user-logged-in';
+import UserContext from './context/user';
+import useAuthListener from './hooks/use-auth-listener';
+import * as ROUTES from './constants/routes';
 
-const Dashboard = lazy(() => import("./pages/dashboard.jsx"));
-const Login = lazy(() => import("./pages/login.jsx"));
-const SignUp = lazy(() => import("./pages/signup.jsx"));
-const Profile = lazy(() => import("./pages/profile.jsx"));
-const NotFound = lazy(() => import("./pages/not-found.jsx"));
+const Dashboard = lazy(() => import ('./pages/dashboard'));
+const Login = lazy(() => import ('./pages/login'));
+const SignUp = lazy(() => import ('./pages/signup'));
+const Profile = lazy(() => import ('./pages/profile'));
+const NotFound = lazy(() => import ('./pages/not-found'));
 
-function App() {
-  return (
-    <Router>
-      <Suspense fallback={<p>Loading...</p>}>
-        <Routes>
-          <Route path={ROUTES.LOGIN} element={<Login />} />
-          <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
-          <Route path={ROUTES.PROFILE} element={<Profile />} />
-          <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
-          <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
-        </Routes>
-      </Suspense>
-    </Router>
-  );
+export default function App() {
+    const { user } = useAuthListener();
+    
+    return (
+        <UserContext.Provider value={{ user }}>
+            <Router>
+                <Suspense fallback={<p>Loading...</p>}>
+                    <Switch>
+                        <IsUserLoggedIn 
+                            user={user} 
+                            loggedInPath={ROUTES.DASHBOARD}
+                            path={ROUTES.LOGIN}
+                        >
+                            <Login />
+                        </IsUserLoggedIn>
+                        <IsUserLoggedIn 
+                            user={user} 
+                            loggedInPath={ROUTES.DASHBOARD}
+                            path={ROUTES.SIGN_UP}
+                        >
+                            <SignUp />
+                        </IsUserLoggedIn>
+                        <Route path={ROUTES.PROFILE} component={Profile} />
+                        <ProtectedRoute user={user} path={ROUTES.DASHBOARD} exact>
+                            <Dashboard />
+                        </ProtectedRoute>
+                        <Route component={NotFound} />
+                    </Switch>
+                </Suspense>
+            </Router>
+        </UserContext.Provider>
+    );
 }
-
-export default App;
